@@ -66,7 +66,8 @@ function ScanPage() {
 
   const startAnalysis = useCallback(
     (imageSrc?: string) => {
-      const picked = diseases[Math.floor(Math.random() * diseases.length)];
+      const picked =
+        diseases[Math.floor(Math.random() * diseases.length)] ?? diseases[0]!;
       setResult(picked);
       setPreview(imageSrc ?? picked.image);
       setPhase("analyzing");
