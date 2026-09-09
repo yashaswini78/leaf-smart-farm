@@ -79,7 +79,8 @@ function DashboardPage() {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-6 gap-1.5 rounded-xl border-2 border-border bg-muted p-2">
             {Array.from({ length: 24 }).map((_, i) => {
-              const intensity = [88, 64, 41, 22, 10, 5][i % 6] - ((i * 7) % 18);
+              const base = [88, 64, 41, 22, 10, 5][i % 6] ?? 10;
+              const intensity = base - ((i * 7) % 18);
               const level = Math.max(4, intensity);
               return (
                 <span
