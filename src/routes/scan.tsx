@@ -90,23 +90,23 @@ function ScanPage() {
   }, [phase]);
 
   useEffect(() => {
-    if (phase === "analyzing" && progress >= 100 && result) {
-      const t = window.setTimeout(() => {
-        setPhase("result");
-        addScan({
-          id: `s-${Math.floor(Math.random() * 9000 + 1000)}`,
-          diseaseId: result.id,
-          diseaseName: result.name,
-          crop: result.crop,
-          confidence: result.confidence,
-          image: result.image,
-          when: "Just now",
-          mode,
-          synced: mode === "cloud" && online,
-        });
-      }, 350);
-      return () => window.clearTimeout(t);
-    }
+    if (phase !== "analyzing" || progress < 100 || !result) return;
+    const captured = result;
+    const t = window.setTimeout(() => {
+      setPhase("result");
+      addScan({
+        id: `s-${Math.floor(Math.random() * 9000 + 1000)}`,
+        diseaseId: captured.id,
+        diseaseName: captured.name,
+        crop: captured.crop,
+        confidence: captured.confidence,
+        image: captured.image,
+        when: "Just now",
+        mode,
+        synced: mode === "cloud" && online,
+      });
+    }, 350);
+    return () => window.clearTimeout(t);
   }, [phase, progress, result, addScan, mode, online]);
 
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
