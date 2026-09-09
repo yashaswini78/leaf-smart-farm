@@ -13,7 +13,10 @@ type AgriState = {
   syncing: boolean;
 };
 
-const AgriContext = createContext<AgriState | null>(null);
+// Keep a single context instance even if this module is evaluated more than
+// once (route code-splitting can create duplicate module instances).
+const g = globalThis as unknown as { __agriContext?: React.Context<AgriState | null> };
+const AgriContext = (g.__agriContext ??= createContext<AgriState | null>(null));
 
 export function AgriProvider({ children }: { children: ReactNode }) {
   const [online, setOnline] = useState(false);
